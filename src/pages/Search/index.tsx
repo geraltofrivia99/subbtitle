@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from 'react';
+import React, { memo, useRef, useState, } from 'react';
 import { useHistory } from "react-router-dom";
 import { Input } from '../../components';
 

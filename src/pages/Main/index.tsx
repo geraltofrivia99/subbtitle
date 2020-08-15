@@ -1,7 +1,9 @@
-import React, { memo, useEffect, useState, useRef } from 'react';
+import React, { memo, useEffect, useState, useRef, useContext } from 'react';
 import { Player, IPlayer, SubtitlesList } from '../../components';
 import { getSubtitlesArray, trnslateWord } from '../../api';
 import { useParams } from "react-router-dom";
+
+import { SearchContext } from '../../context';
 
 type onProgress = IPlayer['onProgress'];
 
@@ -15,6 +17,7 @@ export default memo(() => {
     const [allSub, setAllSub] = useState<any>([]);
     let [error, setError] = useState('');
     let { id } = useParams();
+    const searchRef = useContext(SearchContext);
 
     const startKeysRef: any = useRef({});
     const onProgress: onProgress = ({ playedSeconds }) => {
@@ -43,10 +46,17 @@ export default memo(() => {
     return (
         <>
             
-            <Player id={id} onProgress={onProgress} />
+            <Player id={id} onProgress={onProgress} offset={getHeight(searchRef)}/>
             <SubtitlesList subtitles={allSub} curentSecond={activeSub} error={error}/>
             <button onClick={onTest}>Click</button>
             {/* <Subtitles activeSub={allSub[activeSub]} /> */}
         </>
     )
 })
+
+function getHeight(ref: any): number {
+    if (ref.current) {
+        return ref.current.offsetHeight
+    }
+    return 0;
+}
